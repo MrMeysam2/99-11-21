@@ -1,0 +1,432 @@
+<div class="header bg-gradient-danger pb-5 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <!-- Card stats -->
+      <div class="row">
+        <label class="labelTop"> مدیران شخص حقوقی </label>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="mt--7 m-1">
+  <div class="row">
+    <div class="col-xl-12 mb-5 mb-xl-0">
+      <div class="card bg-gradient-default shadow">
+        <div class="card-header bg-transparent">
+          <div class="row align-items-center">
+            <p-toast></p-toast>
+
+            <div class="card">
+              <p-toolbar styleClass="p-mb-4">
+                <div class="col-md-3">
+                  <button
+                    pButton
+                    pRipple
+                    icon="pi pi-user-plus"
+                    iconPos="left"
+                    label="جدید"
+                    class="p-button-success p-mr-2"
+                    (click)="openNew()"
+                  ></button>
+                  <button
+                    pButton
+                    pRipple
+                    icon="pi pi-search"
+                    style="margin-left: 5px"
+                    iconPos="left"
+                    label="فیلتر"
+                    class="p-button-primary p-mr-2"
+                    (click)="filter()"
+                  ></button>
+                </div>
+                <div class="col-md-9 row" style="direction: rtl">
+                  <div class="col-md-3">
+                    <label for=""> شناسه ملی : {{ ShenasehMeli }} </label>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="">
+                      نام شخص حقوقی : {{ ShakhsHoghooghiName }}</label
+                    >
+                  </div>
+                  <div class="col-md-3">
+                    <label for="">
+                      نوع شخص حقوقی : {{ ShakhsHoghooghiTypeId }}</label
+                    >
+                  </div>
+                </div>
+              </p-toolbar>
+
+              <p-table
+                #dt
+                [value]="modirShakhsHoghooghis"
+                [rows]="10"
+                [paginator]="true"
+                [globalFilterFields]="[
+                  'name',
+                  'country.name',
+                  'representative.name',
+                  'status'
+                ]"
+                [(selection)]="selectModirShakhsHoghooghi"
+                [rowHover]="true"
+                dataKey="Id"
+                currentPageReportTemplate="نمایش {first} تا {last} | از {totalRecords}"
+                [showCurrentPageReport]="true"
+              >
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th style="width: 3rem">
+                      <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th>
+                    <th pSortableColumn="NationalCode">
+                      کدملی
+                      <p-sortIcon field="NationalCode"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="FirstName">
+                      نام
+                      <p-sortIcon field="FirstName"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="FamilyName">
+                      نام خانوادگی
+                      <p-sortIcon field="FamilyName"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="SematModirShakhsHoghooghiTypeName">
+                      سمت
+                      <p-sortIcon
+                        field="SematModirShakhsHoghooghiTypeName"
+                      ></p-sortIcon>
+                    </th>
+                    <th></th>
+                  </tr>
+                  <tr [hidden]="hideFilter">
+                    <th></th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="dt.filter($event.target.value, 'NationalCode')"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="dt.filter($event.target.value, 'FirstName')"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="dt.filter($event.target.value, 'FamilyName')"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="
+                          dt.filter(
+                            $event.target.value,
+                            'SematModirShakhsHoghooghiType'
+                          )
+                        "
+                      />
+                    </th>
+                    <th></th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-modirShakhsHoghooghi>
+                  <tr>
+                    <td>
+                      <p-tableCheckbox
+                        [value]="modirShakhsHoghooghi"
+                      ></p-tableCheckbox>
+                    </td>
+                    <td>{{ modirShakhsHoghooghi.NationalCode }}</td>
+                    <td>{{ modirShakhsHoghooghi.FirstName }}</td>
+                    <td>{{ modirShakhsHoghooghi.FamilyName }}</td>
+                    <td>
+                      {{
+                        modirShakhsHoghooghi.SematModirShakhsHoghooghiTypeName
+                      }}
+                    </td>
+                    <td>
+                      <div class="row">
+                        <button
+                          class="btn btn-primary pi pi-user-edit p-2 m-1"
+                          title="ویرایش"
+                          (click)="editProduct(modirShakhsHoghooghi)"
+                        ></button>
+                        <button
+                          class="btn btn-danger ni ni-fat-remove p-2 m-1"
+                          title="حذف"
+                          (click)="deleteShakhsHaghighi(modirShakhsHoghooghi)"
+                        ></button>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                  <div class="p-ai-center">
+                    مجموع مدیران شخص حقوقی :
+                    {{
+                      modirShakhsHoghooghis ? modirShakhsHoghooghis.length : 0
+                    }}
+                  </div>
+                </ng-template>
+              </p-table>
+            </div>
+
+            <!-- Add Update -->
+            <p-dialog
+              [(visible)]="hoghooghiAddressDialog"
+              [style]="{ width: '35%', 'z-index:': '800', direction: 'rtl' }"
+              header="{{
+                btnUpdate ? 'ویرایش مدیر شخص حقوقی' : 'ثبت مدیر شخص حقوقی'
+              }}"
+              [modal]="true"
+              styleClass="p-fluid"
+            >
+              <ng-template pTemplate="content">
+                <form
+                autocomplete="off"
+                  [formGroup]="checkoutForm"
+                  id="add_haghighiPerson"
+                  name="add_haghighiPerson"
+                  (ngSubmit)="onSubmit($event)"
+                  #doc="ngForm"
+                >
+                  <div class="row col-md-12">
+                    <div class="col-md-12">
+                      <label for="NationalCode">کد ملی</label>
+                      <small class="p-invalid" [hidden]="StatusColeMeli">
+                        ( کد ملی صحیح نمی باشد )
+                      </small>
+                      <small class="p-invalid" [hidden]="StatusNationalCode">
+                        ( کد ملی ثبت نشده است )
+                      </small>
+                      <input
+                        type="text"
+                        pInputText
+                        maxlength="10"
+                        (change)="
+                          getHaghighiPersonData(
+                            modirShakhsHoghooghi.NationalCode
+                          )
+                        "
+                        id="NationalCode"
+                        formControlName="NationalCode"
+                        [(ngModel)]="modirShakhsHoghooghi.NationalCode"
+                      />
+                    </div>
+
+                    <div class="col-md-12">
+                      <label for="FirstName">نام</label>
+                      <input
+                        type="text"
+                        [attr.disabled]="disabled"
+                        value="{{ FirstName }}"
+                        pInputText
+                        formControlName="FirstName"
+                        [(ngModel)]="modirShakhsHoghooghi.FirstName"
+                      />
+                    </div>
+
+                    <div class="col-md-12">
+                      <label for="FamilyName">نام خانوادگی</label>
+                      <input
+                        type="text"
+                        [attr.disabled]="disabled"
+                        pInputText
+                        value="{{ FamilyName }}"
+                        formControlName="FamilyName"
+                        [(ngModel)]="modirShakhsHoghooghi.FamilyName"
+                      />
+                    </div>
+
+                    <div class="col-md-12">
+                      <label for="SematModirShakhsHoghooghiTypeId">سمت</label>
+                      <select
+                        class="form-control"
+                        id="SematModirShakhsHoghooghiTypeId"
+                        formControlName="SematModirShakhsHoghooghiTypeId"
+                        [(ngModel)]="
+                          modirShakhsHoghooghi.SematModirShakhsHoghooghiTypeId
+                        "
+                      >
+                        <option
+                          *ngFor="
+                            let sematModir of SematModirShakhsHoghooghiType
+                          "
+                          value="{{ sematModir.Id }}"
+                        >
+                          {{ sematModir.SematModirShakhsHoghooghiTypeName }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-12 mt-2">
+                      <input
+                        type="checkbox"
+                        id="DarandehEmzaTahodavarShakhsHoghooghi"
+                        name="scales"
+                        formControlName="DarandehEmzaTahodavarShakhsHoghooghi"
+                        [(ngModel)]="
+                          modirShakhsHoghooghi.DarandehEmzaTahodavarShakhsHoghooghi
+                        "
+                        checked
+                      />
+                      <label for="DarandehEmzaTahodavarShakhsHoghooghi"
+                        >دارنده امضاء تعهد آور شخص حقوقی</label
+                      >
+                    </div>
+
+                    <div class="col-md-12 text-center m-1 p-1">
+                      <input
+                        type="submit"
+                        name="save"
+                        class="btn btn-success ml-1"
+                        value="{{ btnUpdate ? 'ویرایش' : 'ثبت' }}"
+                        id="butsave"
+                        [disabled]="!doc.valid"
+                        style="width: 120px"
+                      />
+                      <input
+                        name="close"
+                        class="btn btn-light"
+                        value="انصراف"
+                        (click)="hideDialog()"
+                        style="width: 120px"
+                      />
+                    </div>
+                  </div>
+                </form>
+              </ng-template>
+            </p-dialog>
+
+            <!-- delete -->
+            <p-dialog
+              [(visible)]="modirshakhshoghooghiDialogDelete"
+              [style]="{ width: '35%', 'z-index:': '800', direction: 'rtl' }"
+              header="حذف مدیر شخص حقوقی"
+              [modal]="true"
+              styleClass="p-fluid"
+            >
+              <ng-template pTemplate="content">
+                <form
+                  [formGroup]="checkoutForm"
+                  id="delete_haghighiPerson"
+                  name="delete_haghighiPerson"
+                  (ngSubmit)="onSubmitDelete(modirShakhsHoghooghi.Id)"
+                  #docDel="ngForm"
+                >
+                  <div class="row col-md-12">
+                    <div class="col-md-12">
+                      <label for="NationalCode">کد ملی</label>
+                      <input
+                        type="text"
+                        pInputText
+                        [attr.disabled]="disabled"
+                        formControlName="NationalCode"
+                        [(ngModel)]="modirShakhsHoghooghi.NationalCode"
+                      />
+                    </div>
+
+                    <div class="col-md-12">
+                      <label for="FirstName">نام</label>
+                      <input
+                        type="text"
+                        [attr.disabled]="disabled"
+                        pInputText
+                        formControlName="FirstName"
+                        [(ngModel)]="modirShakhsHoghooghi.FirstName"
+                      />
+                    </div>
+
+                    <div class="col-md-12">
+                      <label for="FamilyName">نام خانوادگی</label>
+                      <input
+                        type="text"
+                        [attr.disabled]="disabled"
+                        pInputText
+                        formControlName="FamilyName"
+                        [(ngModel)]="modirShakhsHoghooghi.FamilyName"
+                      />
+                    </div>
+
+                    <div class="col-md-12">
+                      <label for="SematModirShakhsHoghooghiTypeId">سمت</label>
+                      <select
+                        class="form-control"
+                        [attr.disabled]="disabled"
+                        formControlName="SematModirShakhsHoghooghiTypeId"
+                        [(ngModel)]="
+                          modirShakhsHoghooghi.SematModirShakhsHoghooghiTypeId
+                        "
+                      >
+                        <option
+                          *ngFor="
+                            let sematModir of SematModirShakhsHoghooghiType
+                          "
+                          value="{{ sematModir.Id }}"
+                        >
+                          {{ sematModir.SematModirShakhsHoghooghiTypeName }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-12 mt-2">
+                      <input
+                        type="checkbox"
+                        [attr.disabled]="disabled"
+                        name="scales"
+                        formControlName="DarandehEmzaTahodavarShakhsHoghooghi"
+                        [(ngModel)]="
+                          modirShakhsHoghooghi.DarandehEmzaTahodavarShakhsHoghooghi
+                        "
+                        checked
+                      />
+                      <label for="DarandehEmzaTahodavarShakhsHoghooghi"
+                        >دارنده امضاء تعهد آور شخص حقوقی</label
+                      >
+                    </div>
+
+                    <label class="col-md-12 text-center m-2 text-danger"
+                      >درصورت حذف، مدیر شخص حقوقی به طور کامل از سامانه حقوقی
+                      حذف می گردد و قابل بازیابی نمیباشد</label
+                    >
+
+                    <div class="col-md-12 text-center m-1 p-1">
+                      <input
+                        type="submit"
+                        name="save"
+                        class="btn btn-warning ml-1"
+                        value="حذف"
+                        id="butsave"
+                        style="width: 120px"
+                      />
+                      <input
+                        name="close"
+                        class="btn btn-danger"
+                        value="انصراف"
+                        (click)="hideDialog()"
+                        style="width: 120px"
+                      />
+                    </div>
+                  </div>
+                </form>
+              </ng-template>
+            </p-dialog>
+
+            <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

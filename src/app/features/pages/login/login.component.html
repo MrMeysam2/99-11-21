@@ -1,0 +1,93 @@
+<div class="background">
+  <div class="header py-7 py-lg-8">
+    <div class="container">
+      <div class="header-body text-center mb-7">
+        <div class="row justify-content-center">
+          <div class="col-lg-5 col-md-6">
+            <!-- <h1 class="text-white">welcome!</h1> -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Page content -->
+      <div class="container mt--8 pb-3">
+        <div class="row justify-content-center">
+          <div class="col-lg-5 col-md-7">
+            <div class="card bg-secondary shadow border-0">
+              <div class="card-header bg-transparent pb-5">
+                <div class="text-muted text-center mt-2 mb-3"></div>
+                <div class="row ml-3 mr-3">
+                  <div class="col-md-2">
+                    <img
+                      src="../../../../assets/img/theme/iismodernblue_noor_mainLogo.png"
+                      width="70"
+                    />
+                  </div>
+                  <div class="col-md-10">
+                    <div class="text-center textCenterA">سامانه حقوقی</div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body px-lg-5 py-lg-5">
+                <div class="text-center text-red mb-4">
+                  <label>{{ errorLogin }}</label>
+                </div>
+                <form
+                  [formGroup]="checkoutFormLogin"
+                  (ngSubmit)="onSubmit()"
+                  id="login"
+                  name="login"
+                >
+                  <div class="form-group mb-3">
+                    <div class="input-group input-group-alternative">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"
+                          ><i class="ni ni-circle-08"></i
+                        ></span>
+                      </div>
+                      <input
+                        class="form-control"
+                        id="UserName"
+                        formControlName="UserName"
+                        placeholder="نام کاربری"
+                        type="text"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="input-group input-group-alternative">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"
+                          ><i class="ni ni-lock-circle-open"></i
+                        ></span>
+                      </div>
+                      <input
+                        class="form-control"
+                        placeholder="گذرواژه"
+                        id="Password"
+                        formControlName="Password"
+                        type="password"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="text-center mt-2">
+                    <input
+                      type="submit"
+                      name="save"
+                      class="btn btn-success ml-1"
+                      value="ورود"
+                      id="butsave"
+                      style="width: 120px"
+                    />
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

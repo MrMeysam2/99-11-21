@@ -1,0 +1,730 @@
+<p-table
+  #dt
+  [value]="changeTables"
+  [rows]="10"
+  [paginator]="true"
+  [globalFilterFields]="[
+    'name',
+    'country.name',
+    'representative.name',
+    'status'
+  ]"
+  [(selection)]="selectchangeTables"
+  [rowHover]="true"
+  dataKey="Id"
+  currentPageReportTemplate="نمایش {first} تا {last} | از {totalRecords}"
+  [showCurrentPageReport]="true"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width: 3rem">
+        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+      </th>
+      <th pSortableColumn="RecordChangeDateTime">
+        تاریخ و زمان تغییر رکورد
+        <p-sortIcon field="RecordChangeDateTime"></p-sortIcon>
+      </th>
+      <th pSortableColumn="FirstName">
+        نام کاربر
+        <p-sortIcon field="FirstName"></p-sortIcon>
+      </th>
+      <th pSortableColumn="LastName">
+        نام خانوادگی کاربر
+        <p-sortIcon field="LastName"></p-sortIcon>
+      </th>
+      <th pSortableColumn="PersonnelCode">
+        کدپرسنلی کاربر
+        <p-sortIcon field="PersonnelCode"></p-sortIcon>
+      </th>
+      <th pSortableColumn="Username">
+        نام کاربری کاربر
+        <p-sortIcon field="Username"></p-sortIcon>
+      </th>
+      <th pSortableColumn="NationalCode">
+        کدملی شخص حقیقی در حال حاضر
+        <p-sortIcon field="NationalCode"></p-sortIcon>
+      </th>
+      <!-- <th pSortableColumn="">
+        شناسه ملی شخص حقوقی در حال حاضر
+        <p-sortIcon field=""></p-sortIcon>
+      </th> -->
+      <th></th>
+    </tr>
+    <tr [hidden]="hideFilter">
+      <th></th>
+      <th>
+        <input
+          pInputText
+          type="text"
+          style="width: 100%"
+          (input)="dt.filter($event.target.value, 'RecordChangeDateTime')"
+        />
+      </th>
+      <th>
+        <input
+          pInputText
+          type="text"
+          style="width: 100%"
+          (input)="dt.filter($event.target.value, 'FirstName')"
+        />
+      </th>
+      <th>
+        <input
+          pInputText
+          type="text"
+          style="width: 100%"
+          (input)="dt.filter($event.target.value, 'LastName')"
+        />
+      </th>
+      <th>
+        <input
+          pInputText
+          type="text"
+          style="width: 100%"
+          (input)="dt.filter($event.target.value, 'PersonnelCode')"
+        />
+      </th>
+      <th>
+        <input
+          pInputText
+          type="text"
+          style="width: 100%"
+          (input)="dt.filter($event.target.value, 'Username')"
+        />
+      </th>
+      <th>
+        <input
+          pInputText
+          type="text"
+          style="width: 100%"
+          (input)="dt.filter($event.target.value, 'NationalCode')"
+        />
+      </th>
+      <!-- <th>
+        <input
+          pInputText
+          type="text"
+          style="width: 100%"
+          (input)="dt.filter($event.target.value, 'MeghdarRecordAfterChange')"
+        />
+      </th> -->
+      <th></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-changeTable>
+    <tr>
+      <td>
+        <p-tableCheckbox [value]="changeTable"></p-tableCheckbox>
+      </td>
+      <td>{{ changeTable.RecordChangeDateTime | jalalidatetime }}</td>
+      <td>{{ changeTable.FirstName }}</td>
+      <td>{{ changeTable.LastName }}</td>
+      <td>{{ changeTable.PersonnelCode }}</td>
+      <td>{{ changeTable.Username }}</td>
+      <td>{{ changeTable.NationalCode }}</td>
+      <td>
+        <div class="">
+          <button
+            class="btn btn-primary ni ni-tv-2 p-2 m-1"
+            (click)="showDialog(changeTable)"
+            title="مشاهده"
+          ></button>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="summary">
+    <div class="p-ai-center">
+      مجموع :
+      {{ changeTables ? changeTables.length : 0 }}
+    </div>
+  </ng-template>
+</p-table>
+
+<!-- Show -->
+<p-dialog
+  [(visible)]="changeTableDialog"
+  [style]="{ width: '98%', 'z-index:': '800', direction: 'rtl' }"
+  header="مشاهده"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <ng-template pTemplate="content">
+    <form #doc="ngForm">
+      <div class="row col-md-12">
+        <div class="row col-md-12">
+          <div class="col-md-4 text-center">
+            <div class="row">
+              <div class="col-md-5">
+                <label>شناسه رکورد تغییر یافته</label>
+              </div>
+              <div class="col-md-7">
+                <input
+                  type="text"
+                  class="form-control"
+                  disabled="disabled"
+                  pInputText
+                  [(ngModel)]="changeTable.ChangeRecordId"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+              <div class="col-md-5 mt-1">
+                <label>تاریخ و زمان تغییر رکورد</label>
+              </div>
+              <div class="col-md-7 mt-1">
+                <input
+                  type="text"
+                  class="form-control"
+                  disabled="disabled"
+                  pInputText
+                  [(ngModel)]="RecordChangeDateTime"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+              <div class="col-md-5 mt-1">
+                <label>جدول تغییر یافته</label>
+              </div>
+              <div class="col-md-7 mt-1">
+                <input
+                  type="text"
+                  class="form-control"
+                  pInputText
+                  disabled="disabled"
+                  [(ngModel)]="changeTable.ChangeTableTypeId"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4 text-center">
+            <div class="row">
+              <div class="col-md-5">
+                <label>نام کاربر</label>
+              </div>
+              <div class="col-md-7">
+                <input
+                  type="text"
+                  class="form-control"
+                  disabled="disabled"
+                  pInputText
+                  [(ngModel)]="changeTable.FirstName"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+              <div class="col-md-5 mt-1">
+                <label>کدپرسنلی کاربر</label>
+              </div>
+              <div class="col-md-7 mt-1">
+                <input
+                  type="text"
+                  class="form-control"
+                  disabled="disabled"
+                  pInputText
+                  [(ngModel)]="changeTable.PersonnelCode"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4 text-center">
+            <div class="row">
+              <div class="col-md-5">
+                <label>نام خانوادگی کاربر</label>
+              </div>
+              <div class="col-md-7">
+                <input
+                  type="text"
+                  class="form-control"
+                  disabled="disabled"
+                  pInputText
+                  [(ngModel)]="changeTable.LastName"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+              <div class="col-md-5 mt-1">
+                <label>نام کاربری کاربر</label>
+              </div>
+              <div class="col-md-7 mt-1">
+                <input
+                  type="text"
+                  class="form-control"
+                  disabled="disabled"
+                  pInputText
+                  [(ngModel)]="changeTable.Username"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+              <div class="col-md-5 mt-1">
+                <label>کدملی شخص حقیقی در حال حاضر</label>
+              </div>
+              <div class="col-md-7 mt-1">
+                <input
+                  type="text"
+                  class="form-control"
+                  pInputText
+                  disabled="disabled"
+                  [(ngModel)]="changeTable.NationalCode"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row col-md-12">
+          <div class="col-md-6 borderTable text-center mb-4">
+            <label class="text-red mt-2">
+              اطلاعات شخص حقیقی قبل از تغییر
+            </label>
+            <hr />
+            <div class="row col-md-12">
+              <div class="col-md-12 row">
+                <div class="col-md-4">
+                  <label>کدملی</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="NationalCodeSplitBefore"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>نام</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="FirstNameSplitBefore"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>نام خانوادگی</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="FamilyNameSplitBefore"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>تاریخ تولد</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="BirthDateSplitBefore"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>تاریخ تولد (شمسی)</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="BirthDateShamsSplitBefore"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>نام پدر</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="FatherNameSplitBefore"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>شماره شناسنامه</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="ShomarehShenasnamehSplitBefore"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>شناسه استان محل صدور شناسنامه</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="ProvinceIdSplitBefore"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>استان محل صدور شناسنامه</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="ProvinceNameSplitBefore"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>شناسه محل صدور شناسنامه</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText0
+                    [(ngModel)]="MahalSodoorShenasnamehIdSplitBefore"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>محل صدور شناسنامه</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="CityNameSplitBefore"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>سری شناسنامه</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="SeriShenasnamehSplitBefore"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>سریال شناسنامه</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="SerialShenasnamehSplitBefore"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>شماره موبایل</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="ShomarehMobileSplitBefore"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 borderTable text-center mb-4">
+            <label class="text-green mt-2">
+              اطلاعات شخص حقیقی بعد از تغییر
+            </label>
+            <hr />
+            <div class="row col-md-12">
+              <div class="col-md-12 row">
+                <div class="col-md-4">
+                  <label>کدملی</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="NationalCodeSplitAfter"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>نام</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="FirstNameSplitAfter"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>نام خانوادگی</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="FamilyNameSplitAfter"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>تاریخ تولد</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="BirthDateSplitAfter"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>تاریخ تولد (شمسی)</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="BirthDateShamsSplitAfter"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>نام پدر</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="FatherNameSplitAfter"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>شماره شناسنامه</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="ShomarehShenasnamehSplitAfter"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>شناسه استان محل صدور شناسنامه</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="ProvinceIdSplitAfter"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>استان محل صدور شناسنامه</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="ProvinceNameSplitAfter"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>شناسه محل صدور شناسنامه</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText0
+                    [(ngModel)]="MahalSodoorShenasnamehIdSplitAfter"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>محل صدور شناسنامه</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="CityNameSplitAfter"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>سری شناسنامه</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="SeriShenasnamehSplitAfter"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>سریال شناسنامه</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="SerialShenasnamehSplitAfter"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+              <div class="col-md-12 row mt-1">
+                <div class="col-md-4">
+                  <label>شماره موبایل</label>
+                </div>
+                <div class="col-md-8">
+                  <input
+                    type="text"
+                    class="form-control"
+                    disabled="disabled"
+                    pInputText
+                    [(ngModel)]="ShomarehMobileSplitAfter"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="col-md-12 text-center m-1 p-1">
+                    <input
+                      name="close"
+                      class="btn btn-light"
+                      value="انصراف"
+                      (click)="hideDialog()"
+                      style="width: 120px"
+                    />
+                  </div> -->
+      </div>
+    </form>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>

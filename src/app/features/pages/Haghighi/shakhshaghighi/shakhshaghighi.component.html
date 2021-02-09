@@ -1,0 +1,649 @@
+<div class="header bg-gradient-danger pb-5 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <!-- Card stats -->
+      <div class="row"><label class="labelTop"> اشخاص حقیقی   </label></div>
+    </div>
+  </div>
+</div>
+<div class="mt--7 m-1">
+  <div class="row">
+    <div class="col-xl-12 mb-5 mb-xl-0">
+      <div class="card bg-gradient-default shadow">
+        <div class="card-header bg-transparent">
+          <div class="row align-items-center">
+            <p-toast></p-toast>
+
+            <div class="card">
+              <p-toolbar styleClass="p-mb-4">
+                <ng-template pTemplate="left">
+                  <button
+                    pButton
+                    pRipple
+                    icon="pi pi-user-plus"
+                    iconPos="left"
+                    label="جدید"
+                    class="p-button-success p-mr-2"
+                    (click)="openNew()"
+                  ></button>
+                  <button
+                    pButton
+                    pRipple
+                    icon="pi pi-search"
+                    style="margin-left: 5px"
+                    iconPos="left"
+                    label="فیلتر"
+                    class="p-button-primary p-mr-2"
+                    (click)="filter()"
+                  ></button>
+                </ng-template>
+
+                <ng-template pTemplate="right"> </ng-template>
+              </p-toolbar>
+
+              <p-table
+                #dt
+                [value]="haghighiPersons"
+                [rows]="10"
+                [paginator]="true"
+                [globalFilterFields]="[
+                  'name',
+                  'country.name',
+                  'representative.name',
+                  'status'
+                ]"
+                [(selection)]="selecthaghighiPersons"
+                [rowHover]="true"
+                dataKey="PersonId"
+                currentPageReportTemplate="نمایش {first} تا {last} | از {totalRecords}"
+                [showCurrentPageReport]="true"
+              >
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th style="width: 3rem">
+                      <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th>
+                    <th pSortableColumn="NationalCode">
+                      کد ملی
+                      <p-sortIcon field="NationalCode"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="FirstName">
+                      نام
+                      <p-sortIcon field="FirstName"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="FamilyName">
+                      نام خانوادگی
+                      <p-sortIcon field="FamilyName"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="BirthDate">
+                      تاریخ تولد
+                      <p-sortIcon field="BirthDate"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="FatherName">
+                      نام پدر
+                      <p-sortIcon field="FatherName"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="ShomarehShenasnameh">
+                      شماره شناسنامه
+                      <p-sortIcon field="ShomarehShenasnameh"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="Name">
+                      محل صدور شناسنامه
+                      <p-sortIcon field="Name"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="SeriShenasnameh">
+                      سری شناسنامه
+                      <p-sortIcon field="SeriShenasnameh"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="SerialShenasnameh">
+                      سریال شناسنامه
+                      <p-sortIcon field="SerialShenasnameh"></p-sortIcon>
+                    </th>
+                    <th></th>
+                  </tr>
+                  <tr [hidden]="hideFilter">
+                    <th></th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="dt.filter($event.target.value, 'NationalCode')"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="dt.filter($event.target.value, 'FirstName')"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="dt.filter($event.target.value, 'FamilyName')"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="dt.filter($event.target.value, 'BirthDate')"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="dt.filter($event.target.value, 'FatherName')"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="
+                          dt.filter($event.target.value, 'ShomarehShenasnameh')
+                        "
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="
+                          dt.filter(
+                            $event.target.value,
+                            'MahalSodoorShenasnamehId'
+                          )
+                        "
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="
+                          dt.filter($event.target.value, 'SeriShenasnameh')
+                        "
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="
+                          dt.filter($event.target.value, 'SerialShenasnameh')
+                        "
+                      />
+                    </th>
+                    <th></th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-haghighiPerson>
+                  <tr>
+                    <td>
+                      <p-tableCheckbox
+                        [value]="haghighiPerson"
+                      ></p-tableCheckbox>
+                    </td>
+                    <td>{{ haghighiPerson.NationalCode }}</td>
+                    <td>{{ haghighiPerson.FirstName }}</td>
+                    <td>{{ haghighiPerson.FamilyName }}</td>
+                    <td>{{ haghighiPerson.BirthDate  | jalalidate }}</td>
+                    <td>{{ haghighiPerson.FatherName }}</td>
+                    <td>{{ haghighiPerson.ShomarehShenasnameh }}</td>
+                    <td>{{ haghighiPerson.ProvinceName }}</td>
+                    <td>{{ haghighiPerson.SeriShenasnameh }}</td>
+                    <td>{{ haghighiPerson.SerialShenasnameh }}</td>
+                    <!-- <td>{{ haghighiPerson.ShomarehMobile }}</td> -->
+                    <td>
+                      <div class="row">
+                        <button
+                          class="btn btn-primary ni ni-fat-add p-2 m-1"
+                          (click)="addaddress(haghighiPerson)"
+                          title="آدرس ها"
+                        ></button>
+                        <button
+                          class="btn btn-primary pi pi-user-edit p-2 m-1"
+                          title="ویرایش"
+                          (click)="editProduct(haghighiPerson)"
+                        ></button>
+                        <button
+                          class="btn btn-danger ni ni-fat-remove p-2 m-1"
+                          title="حذف"
+                          (click)="deleteShakhsHaghighi(haghighiPerson)"
+                        ></button>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                  <div class="p-ai-center">
+                    مجموع اشخاص حقیقی :
+                    {{ haghighiPersons ? haghighiPersons.length : 0 }}
+                  </div>
+                </ng-template>
+              </p-table>
+            </div>
+
+            <!-- Add Update -->
+            <p-dialog
+              [(visible)]="haghighiDialog"
+              [style]="{ width: '70%', direction: 'rtl' }"
+              header="{{ btnUpdate ? 'ویرایش شخص حقیقی' : 'ثبت شخص حقیقی' }}"
+              [modal]="true"
+              styleClass="p-fluid"
+            >
+              <ng-template pTemplate="content">
+                <form
+                  autocomplete="off"
+                  [formGroup]="checkoutForm"
+                  id="add_haghighiPerson"
+                  name="add_haghighiPerson"
+                  (ngSubmit)="onSubmit($event)"
+                  #doc="ngForm"
+                >
+                  <div class="row col-md-12">
+                    <div class="col-md-6">
+                      <label for="NationalCode">کدملی</label>
+                      <small class="p-invalid" [hidden]="StatusColeMeli">
+                        ( کد ملی صحیح نمی باشد )
+                      </small>
+                      <small class="p-invalid" [hidden]="StatusColeMeliRepeat">
+                        ( کد ملی تکراری می باشد )
+                      </small>
+                      <input
+                        type="text"
+                        pInputText
+                        id="NationalCode"
+                        maxlength="10"
+                        (change)="
+                        IsExistNationalCode(
+                            haghighiPerson.NationalCode
+                          )
+                        "
+                        formControlName="NationalCode"
+                        [(ngModel)]="haghighiPerson.NationalCode"
+                        autofocus
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="FirstName">نام</label>
+                      <input
+                        type="text"
+                        pInputText
+                        id="FirstName"
+                        maxlength="40"
+                        formControlName="FirstName"
+                        [(ngModel)]="haghighiPerson.FirstName"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="price">نام خانوادگی</label>
+                      <input
+                        type="text"
+                        pInputText
+                        id="FamilyName"
+                        maxlength="40"
+                        formControlName="FamilyName"
+                        [(ngModel)]="haghighiPerson.FamilyName"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="quantity">تاریخ تولد</label>
+                      <div class="row col-md-12">
+                        <div class="col-md-11">
+                          <input
+                            matInput
+                            pInputText
+                            id="BirthDate"
+                            formControlName="BirthDate"
+                            [(ngModel)]="haghighiPerson.BirthDate"
+                            [matDatepicker]="picker6"
+                            placeholder="تاریخ تولد"
+                          />
+                        </div>
+                        <div class="col-md-1">
+                          <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker6"
+                          ></mat-datepicker-toggle>
+                          <mat-datepicker #picker6></mat-datepicker>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="description">نام پدر</label>
+                      <input
+                        type="text"
+                        pInputText
+                        id="FatherName"
+                        maxlength="40"
+                        formControlName="FatherName"
+                        [(ngModel)]="haghighiPerson.FatherName"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="ShomarehShenasnameh">شماره شناسنامه</label>
+                      <input
+                        type="text"
+                        pInputText
+                        id="ShomarehShenasnameh"
+                        maxlength="20"
+                        formControlName="ShomarehShenasnameh"
+                        [(ngModel)]="haghighiPerson.ShomarehShenasnameh"
+                      />
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="ProvinceCode">استان</label>
+                      <select
+                        class="form-control"
+                        id="ProvinceCode"
+                        formControlName="ProvinceCode"
+                        [(ngModel)]="haghighiPerson.ProvinceCode"
+                        #mySelect
+                        (change)="setCity(mySelect.value)"
+                        
+                      >
+                        <option value=""></option>
+                        <option
+                          *ngFor="let province of AllProvince"
+                          value="{{ province.Code }}"
+                        >
+                          {{ province.Name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="MahalSodoorShenasnamehId">شهر</label>
+                      <select
+                        class="form-control"
+                        id="MahalSodoorShenasnamehId"
+                        formControlName="MahalSodoorShenasnamehId"
+                        [(ngModel)]="haghighiPerson.MahalSodoorShenasnamehId"
+                        
+                      >
+                        <option [ngValue]=""></option>
+                        <option
+                          *ngFor="let cityProvince of cityProvinces"
+                          value="{{ cityProvince.Id }}"
+                        >
+                          {{ cityProvince.Name }}
+                        </option>
+                      </select>
+                    </div>
+
+
+
+                    <!-- <div class="col-md-6">
+                      <label for="MahalSodoorShenasnamehId"
+                        >محل صدور شناسنامه</label
+                      >
+                      <select
+                        class="form-control"
+                        name=""
+                        id="MahalSodoorShenasnamehId"
+                        formControlName="MahalSodoorShenasnamehId"
+                        [(ngModel)]="haghighiPerson.MahalSodoorShenasnamehId"
+                      >
+                        <option
+                          *ngFor="let allCity of GetAllCity"
+                          value="{{ allCity.Id }}"
+                        >
+                          {{ allCity.Name }}
+                        </option>
+                      </select>
+                    </div> -->
+                    <div class="col-md-6">
+                      <label for="SeriShenasnameh">سری شناسنامه</label>
+                      <input
+                        type="text"
+                        pInputText
+                        id="SeriShenasnameh"
+                        maxlength="15"
+                        formControlName="SeriShenasnameh"
+                        [(ngModel)]="haghighiPerson.SeriShenasnameh"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="SerialShenasnameh">سریال شناسنامه</label>
+                      <input
+                        type="text"
+                        pInputText
+                        id="SerialShenasnameh"
+                        maxlength="20"
+                        formControlName="SerialShenasnameh"
+                        [(ngModel)]="haghighiPerson.SerialShenasnameh"
+                      />
+                    </div>
+                    <div class="col-md-12">
+                      <label for="ShomarehMobile">شماره موبایل</label>
+                      <input
+                        type="text"
+                        pInputText
+                        id="ShomarehMobile"
+                        maxlength="50"
+                        formControlName="ShomarehMobile"
+                        [(ngModel)]="haghighiPerson.ShomarehMobile"
+                      />
+                    </div>
+                    <div class="col-md-12 text-center m-1 p-1">
+                      <input
+                        type="submit"
+                        name="save"
+                        class="btn btn-success ml-1"
+                        value="{{ btnUpdate ? 'ویرایش' : 'ثبت' }}"
+                        id="butsave"
+                        [disabled]="!doc.valid"
+                        style="width: 120px"
+                      />
+                      <input
+                        name="close"
+                        class="btn btn-light"
+                        value="انصراف"
+                        (click)="hideDialog()"
+                        style="width: 120px"
+                      />
+                    </div>
+                  </div>
+                </form>
+              </ng-template>
+            </p-dialog>
+
+            <!-- delete -->
+            <p-dialog
+              [(visible)]="haghighiDialogDelete"
+              [style]="{ width: '70%', 'z-index:': '800', direction: 'rtl' }"
+              header=" حذف شخص حقیقی"
+              [modal]="true"
+              styleClass="p-fluid"
+            >
+              <ng-template pTemplate="content">
+                <form
+                  [formGroup]="checkoutForm"
+                  id="delete_haghighiPerson"
+                  name="delete_haghighiPerson"
+                  (ngSubmit)="onSubmitDelete(haghighiPerson.PersonId)"
+                  #doc="ngForm"
+                >
+                  <div class="row col-md-12">
+                    <div class="col-md-6">
+                      <label for="NationalCode">کدملی</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [attr.disabled]="disabled"
+                        formControlName="NationalCode"
+                        pInputText
+                        [(ngModel)]="haghighiPerson.NationalCode"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="FirstName">نام</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="FirstName"
+                        [attr.disabled]="disabled"
+                        pInputText
+                        [(ngModel)]="haghighiPerson.FirstName"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="price">نام خانوادگی</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="FamilyName"
+                        pInputText
+                        [attr.disabled]="disabled"
+                        [(ngModel)]="haghighiPerson.FamilyName"
+                        required
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="quantity">تاریخ تولد</label>
+                      <div class="row col-md-12">
+                        <div class="col-md-11">
+                          <input
+                            matInput
+                            pInputText
+                            formControlName="BirthDate"
+                            [(ngModel)]="haghighiPerson.BirthDate"
+                            [matDatepicker]="picker7"
+                            placeholder="تاریخ ثبت"
+                            disabled="disabled"
+                          />
+                        </div>
+                        <div class="col-md-1">
+                          <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker6"
+                          ></mat-datepicker-toggle>
+                          <mat-datepicker #picker7></mat-datepicker>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="description">نام پدر</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="FatherName"
+                        [attr.disabled]="disabled"
+                        pInputText
+                        [(ngModel)]="haghighiPerson.FatherName"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="ShomarehShenasnameh">شماره شناسنامه</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="ShomarehShenasnameh"
+                        [attr.disabled]="disabled"
+                        pInputText
+                        [(ngModel)]="haghighiPerson.ShomarehShenasnameh"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="MahalSodoorShenasnamehId"
+                        >محل صدور شناسنامه</label
+                      >
+                      <select
+                        class="form-control"
+                        formControlName="MahalSodoorShenasnamehId"
+                        [attr.disabled]="disabled"
+                        name=""
+                        [(ngModel)]="haghighiPerson.MahalSodoorShenasnamehId"
+                      >
+                        <option [ngValue]="null">
+                          لطفا نام شهر را وارد کنید
+                        </option>
+                        <option
+                          *ngFor="let allCity of GetAllCity"
+                          value="{{ allCity.Id }}"
+                        >
+                          {{ allCity.Name }}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="SeriShenasnameh">سری شناسنامه</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="SeriShenasnameh"
+                        [attr.disabled]="disabled"
+                        pInputText
+                        [(ngModel)]="haghighiPerson.SeriShenasnameh"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="SerialShenasnameh">سریال شناسنامه</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="SerialShenasnameh"
+                        [attr.disabled]="disabled"
+                        pInputText
+                        [(ngModel)]="haghighiPerson.SerialShenasnameh"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="ShomarehMobile">شماره موبایل</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="ShomarehMobile"
+                        [attr.disabled]="disabled"
+                        pInputText
+                        [(ngModel)]="haghighiPerson.ShomarehMobile"
+                      />
+                    </div>
+                    <label class="col-md-12 text-center m-2 text-danger"
+                      >درصورت حذف، شخص حقیقی به طور کامل از سامانه حقوقی حذف می
+                      گردد و قابل بازیابی نمیباشد</label
+                    >
+
+                    <div class="col-md-12 text-center m-1 p-1">
+                      <input
+                        type="submit"
+                        name="save"
+                        class="btn btn-danger ml-1"
+                        value="حذف"
+                        id="butsave"
+                        style="width: 120px"
+                      />
+                      <input
+                        name="close"
+                        class="btn btn-light"
+                        value="انصراف"
+                        (click)="hideDialog()"
+                        style="width: 120px"
+                      />
+                    </div>
+                  </div>
+                </form>
+              </ng-template>
+            </p-dialog>
+
+            <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

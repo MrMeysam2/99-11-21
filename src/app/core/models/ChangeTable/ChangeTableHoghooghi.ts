@@ -1,0 +1,52 @@
+export interface ChangeTableHoghooghi {
+    Id?: number;
+    Username?: string;
+    PersonnelCode?: string;
+    FirstName?: string;
+    LastName?: string;
+    ShenasehMeli?: string;
+    RecordChangeDateTime?: Date;
+    RecordChangeUserId?: number;
+    ChangeTableTypeId?: number;
+    ChangeRecordId?: number;
+    MeghdarRecordBeforeChange?: string;
+    MeghdarRecordAfterChange?: string;
+    CreationUserId?: number;
+    CreationDate?: Date;
+    LastModifyUserId?: number;
+    LastModifyDate?: Date;
+
+    ShenasehMeliSplitBefore?: any;
+    ShakhsHoghooghiNameSplitBefore?: any;
+    ShakhsHoghooghiTypeIdSplitBefore?: any;
+    ShakhsHoghooghiTypeSplitBefore?: any;
+    EghtesadiJadidCodeSplitBefore?: any;
+    SabtDateSplitBefore?: any;
+    SabtDateJalaliSplitBefore?: any;
+    ShomarehSabtSplitBefore?: any;
+    MahalSabtCityIdSplitBefore?: string;
+    CityNameSplitBefore?: any;
+    ProvinceIdSplitBefore?: string;
+    ProvinceNameSplitBefore?: any;
+    EghtesadiGhadimCodeSplitBefore?: any;
+    AkharinRooznamehRasmiDateSplitBefore?: any;
+    AkharinRooznamehRasmiDateJalliSplitBefore?: any;
+    ShomarehMobileSplitBefore?: any;
+
+    ShenasehMeliSplitAfter?: any;
+    ShakhsHoghooghiNameSplitAfter?: any;
+    ShakhsHoghooghiTypeIdSplitAfter?: any;
+    ShakhsHoghooghiTypeSplitAfter?: any;
+    EghtesadiJadidCodeSplitAfter?: any;
+    SabtDateSplitAfter?: any;
+    SabtDateJalaliSplitAfter?: any;
+    ShomarehSabtSplitAfter?: any;
+    MahalSabtCityIdSplitAfter?: string;
+    CityNameSplitAfter?: any;
+    ProvinceIdSplitAfter?: string;
+    ProvinceNameSplitAfter?: any;
+    EghtesadiGhadimCodeSplitAfter?: any;
+    AkharinRooznamehRasmiDateSplitAfter?: any;
+    AkharinRooznamehRasmiDateJalliSplitAfter?: any;
+    ShomarehMobileSplitAfter?: any;
+}

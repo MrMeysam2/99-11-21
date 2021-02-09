@@ -1,0 +1,655 @@
+<div class="header bg-gradient-danger pb-5 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <div class="row">
+        <label class="labelTop"> سند های رهنی غیر منقول </label>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="mt--7 m-1">
+  <div class="row">
+    <div class="col-xl-12 mb-5 mb-xl-0">
+      <div class="card bg-gradient-default shadow">
+        <div class="card-header bg-transparent">
+          <div class="row align-items-center">
+            <p-toast></p-toast>
+
+            <div class="card">
+              <p-toolbar styleClass="p-mb-4">
+                <div class="col-md-4 text-left">
+                  <button
+                    pButton
+                    pRipple
+                    icon="pi pi-user-plus"
+                    iconPos="left"
+                    label="جدید"
+                    class="p-button-success p-mr-2 m-1"
+                    (click)="openNew()"
+                  ></button>
+                  <button
+                    pButton
+                    pRipple
+                    icon="ni ni-circle-08"
+                    iconPos="left"
+                    label="تخصیص"
+                    class="p-button-help p-mr-2 m-1"
+                    (click)="takhsis(sanadRahniGheyrManghol)"
+                    title="تخصیص"
+                  ></button>
+                  <button
+                    pButton
+                    pRipple
+                    icon="pi pi-search"
+                    style="margin-left: 5px"
+                    iconPos="left"
+                    label="فیلتر"
+                    class="p-button-primary p-mr-2 m-1"
+                    (click)="filter()"
+                  ></button>
+                </div>
+                <div class="col-md-8 row" style="direction: rtl">
+                  <div class="col-md-4">
+                    <label for="">
+                      شماره پرونده در واحد حقوقی :
+                      {{ shomarehParvandehDarVahedHoghooghi }}
+                    </label>
+                  </div>
+                  <div class="col-md-8">
+                    <label for=""> نام پرونده : {{ nameParvandeh }}</label>
+                  </div>
+                </div>
+              </p-toolbar>
+
+              <p-table
+                #dt
+                [value]="sanadRahniGheyrManghols"
+                [rows]="10"
+                [paginator]="true"
+                [(selection)]="selectSanadRahniGheyrManghols"
+                [rowHover]="true"
+                dataKey="Id"
+                currentPageReportTemplate="نمایش {first} تا {last} | از {totalRecords}"
+                [showCurrentPageReport]="true"
+              >
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th style="width: 3rem">
+                      <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th>
+                    <th pSortableColumn="ShomarehSanadRahni">
+                      شماره سند رهنی
+                      <p-sortIcon field="ShomarehSanadRahni"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="SanadRahniDate">
+                      تاریخ سند رهنی
+                      <p-sortIcon field="SanadRahniDate"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="ShomarehDaftarkhanehTanzimkonandeh">
+                      شماره دفترخانه تنظیم کننده سند رهنی
+                      <p-sortIcon
+                        field="ShomarehDaftarkhanehTanzimkonandeh"
+                      ></p-sortIcon>
+                    </th>
+                    <th
+                      pSortableColumn="HozehSabtiDaftarkhanehTanzimkonandehId"
+                    >
+                      استان حوزه ثبتی دفترخانه تنظیم کننده سند رهنی
+                      <p-sortIcon
+                        field="HozehSabtiDaftarkhanehTanzimkonandehId"
+                      ></p-sortIcon>
+                    </th>
+                    <th
+                      pSortableColumn="HozehSabtiDaftarkhanehTanzimkonandehId"
+                    >
+                      حوزه ثبتی تنظیم کننده سند رهنی
+                      <p-sortIcon
+                        field="HozehSabtiDaftarkhanehTanzimkonandehId"
+                      ></p-sortIcon>
+                    </th>
+
+                    <th></th>
+                  </tr>
+                  <tr [hidden]="hideFilter">
+                    <th></th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="
+                          dt.filter($event.target.value, 'ShomarehSanadRahni')
+                        "
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="
+                          dt.filter($event.target.value, 'SanadRahniDate')
+                        "
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="
+                          dt.filter(
+                            $event.target.value,
+                            'ShomarehDaftarkhanehTanzimkonandeh'
+                          )
+                        "
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="
+                          dt.filter(
+                            $event.target.value,
+                            'HozehSabtiDaftarkhanehTanzimkonandehId'
+                          )
+                        "
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="
+                          dt.filter(
+                            $event.target.value,
+                            'HozehSabtiDaftarkhanehTanzimkonandehId'
+                          )
+                        "
+                      />
+                    </th>
+
+                    <th></th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-sanadRahniGheyrManghol>
+                  <tr>
+                    <td>
+                      <p-tableCheckbox
+                        [value]="sanadRahniGheyrManghol"
+                      ></p-tableCheckbox>
+                    </td>
+                    <td>
+                      {{ sanadRahniGheyrManghol.ShomarehSanadRahni }}
+                    </td>
+                    <td>
+                      {{ sanadRahniGheyrManghol.SanadRahniDate | jalalidate }}
+                    </td>
+                    <td>
+                      {{
+                        sanadRahniGheyrManghol.ShomarehDaftarkhanehTanzimkonandeh
+                      }}
+                    </td>
+                    <td>
+                      {{
+                        sanadRahniGheyrManghol.HozehSabtiDaftarkhanehTanzimkonandehId
+                      }}
+                    </td>
+                    <td>
+                      {{
+                        sanadRahniGheyrManghol.HozehSabtiDaftarkhanehTanzimkonandehId
+                      }}
+                    </td>
+                    <td>
+                      <div class="row">
+                        <button
+                          class="btn btn-primary ni ni-fat-add p-2 m-1"
+                          (click)="taghir(sanadRahniGheyrManghol)"
+                          title="تغییر"
+                        ></button>
+                        <button
+                          class="btn btn-primary pi pi-user-edit p-2 m-1"
+                          title="ویرایش"
+                          (click)="edit(sanadRahniGheyrManghol)"
+                        ></button>
+                        <button
+                          class="btn btn-danger ni ni-fat-remove p-2 m-1"
+                          title="حذف"
+                          (click)="delete(sanadRahniGheyrManghol)"
+                        ></button>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                  <div class="p-ai-center">
+                    مجموع سند های رهنی غیر منقول :
+                    {{
+                      sanadRahniGheyrManghols
+                        ? sanadRahniGheyrManghols.length
+                        : 0
+                    }}
+                  </div>
+                </ng-template>
+              </p-table>
+            </div>
+
+            <!-- Add - Update -->
+            <p-dialog
+              [(visible)]="SanadRahniGheyrMangholDialog"
+              [style]="{ width: '70%', direction: 'rtl' }"
+              header="{{
+                btnUpdate
+                  ? 'ویرایش سند رهنی غیر منقول'
+                  : 'ثبت سند رهنی غیر منقول'
+              }}"
+              [modal]="true"
+              styleClass="p-fluid"
+            >
+              <ng-template pTemplate="content">
+                <form
+                  autocomplete="off"
+                  [formGroup]="checkoutForm"
+                  id="add_shakhsHoghooghi"
+                  name="add_shakhsHoghooghi"
+                  (ngSubmit)="onSubmit($event)"
+                  #doc="ngForm"
+                >
+                  <div class="row col-md-12">
+
+                    <div class="col-md-6">
+                      <label for="ShomarehSanadRahni">شماره سند رهنی</label>
+                      <input
+                        type="text"
+                        pInputText
+                        id="ShomarehSanadRahni"
+                        formControlName="ShomarehSanadRahni"
+                        [attr.disabled]="disabled"
+                        [(ngModel)]="sanadRahniGheyrManghol.ShomarehSanadRahni"
+                      />
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="ShomarehDaftarkhanehTanzimkonandeh"
+                        >شماره دفترخانه تنظیم کننده سند رهنی</label
+                      >
+                      <input
+                        type="text"
+                        pInputText
+                        id="ShomarehDaftarkhanehTanzimkonandeh"
+                        formControlName="ShomarehDaftarkhanehTanzimkonandeh"
+                        [(ngModel)]="
+                          sanadRahniGheyrManghol.ShomarehDaftarkhanehTanzimkonandeh
+                        "
+                      />
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="ProvinceCode"
+                        >استان حوزه ثبتی دفترخانه تنظیم کننده سند رهنی</label
+                      >
+                      <select
+                        class="form-control"
+                        id="ProvinceCode"
+                        formControlName="ProvinceCode"
+                        [(ngModel)]="sanadRahniGheyrManghol.ProvinceCode"
+                        #mySelect
+                        (change)="setCity(mySelect.value)"
+                      >
+                        <option value=""></option>
+                        <option
+                          *ngFor="let province of AllProvince"
+                          value="{{ province.Code }}"
+                        >
+                          {{ province.Name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="ShomarehDaftarkhanehTanzimkonandeh"
+                        >حوزه ثبتی دفترخانه تنظیم کننده سند رهنی</label
+                      >
+                      <select
+                        class="form-control"
+                        id="ShomarehDaftarkhanehTanzimkonandeh"
+                        formControlName="ShomarehDaftarkhanehTanzimkonandeh"
+                        [(ngModel)]="
+                          sanadRahniGheyrManghol.ShomarehDaftarkhanehTanzimkonandeh
+                        "
+                      >
+                        <option [ngValue]=""></option>
+                        <option
+                          *ngFor="let cityProvince of cityProvinces"
+                          value="{{ cityProvince.Id }}"
+                        >
+                          {{ cityProvince.Name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="SanadRahniDate">تاریخ سند رهنی</label>
+                      <div class="row col-md-12">
+                        <div class="col-md-11">
+                          <input
+                            matInput
+                            pInputText
+                            id="SanadRahniDate"
+                            formControlName="SanadRahniDate"
+                            [(ngModel)]="sanadRahniGheyrManghol.SanadRahniDate"
+                            [matDatepicker]="picker6"
+                            placeholder="تاریخ سند رهنی"
+                          />
+                        </div>
+                        <div class="col-md-1">
+                          <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker6"
+                          ></mat-datepicker-toggle>
+                          <mat-datepicker #picker6></mat-datepicker>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="SanadRahniGheyrMangholTypeId"
+                        >نوع سند رهنی</label
+                      >
+                      <select
+                        class="form-control"
+                        id="SanadRahniGheyrMangholTypeId"
+                        formControlName="SanadRahniGheyrMangholTypeId"
+                        [(ngModel)]="
+                          sanadRahniGheyrManghol.SanadRahniGheyrMangholTypeId
+                        "
+                      >
+                        <option [ngValue]=""></option>
+                        <option
+                          *ngFor="let cityProvince of cityProvinces"
+                          value="{{ cityProvince.Id }}"
+                        ></option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="MizanArzyabiAvaliyeh"
+                        >میزان ارزیابی اولیه (ريال)</label
+                      >
+                      <input
+                        type="text"
+                        pInputText
+                        id="MizanArzyabiAvaliyeh"
+                        formControlName="MizanArzyabiAvaliyeh"
+                        [(ngModel)]="
+                          sanadRahniGheyrManghol.MizanArzyabiAvaliyeh
+                        "
+                      />
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="MizanAkharinArzyabi"
+                        >میزان آخرین ارزیابی (ريال)</label
+                      >
+                      <input
+                        type="text"
+                        pInputText
+                        id="MizanAkharinArzyabi"
+                        formControlName="MizanAkharinArzyabi"
+                        [(ngModel)]="sanadRahniGheyrManghol.MizanAkharinArzyabi"
+                      />
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="MablaghSanadRahni"
+                        >مبلغ سند رهنی (ريال)</label
+                      >
+                      <input
+                        type="text"
+                        pInputText
+                        id="MablaghSanadRahni"
+                        formControlName="MablaghSanadRahni"
+                        [(ngModel)]="sanadRahniGheyrManghol.MablaghSanadRahni"
+                      />
+                    </div>
+
+                    <div class="col-md-12 text-center m-1 p-1">
+                      <input
+                        type="submit"
+                        name="save"
+                        class="btn btn-success ml-1"
+                        value="{{ btnUpdate ? 'ویرایش' : 'ثبت' }}"
+                        style="width: 120px"
+                        id="butsave"
+                        [disabled]="!doc.valid"
+                      />
+                      <input
+                        name="close"
+                        class="btn btn-light"
+                        value="انصراف"
+                        (click)="hideDialog()"
+                        style="width: 120px"
+                      />
+                    </div>
+                  </div>
+                </form>
+              </ng-template>
+            </p-dialog>
+
+            <!-- Delete -->
+            <p-dialog
+              [(visible)]="SanadRahniGheyrMangholDialogDelete"
+              [style]="{ width: '70%', direction: 'rtl' }"
+              header="حذف سند رهنی غیر منقول"
+              [modal]="true"
+              styleClass="p-fluid"
+            >
+              <ng-template pTemplate="content">
+                <form
+                  [formGroup]="checkoutForm"
+                  id="delete_sanadrahnigheyrmanghol"
+                  name="delete_sanadrahnigheyrmanghol"
+                  (ngSubmit)="onSubmitDelete(sanadRahniGheyrManghol.Id)"
+                  #doc="ngForm"
+                >
+                  <div class="row col-md-12">
+                    <div class="col-md-6">
+                      <label for="ShomarehSanadRahni">شماره سند رهنی</label>
+                      <input
+                        type="text"
+                        pInputText
+                        id="ShomarehSanadRahni"
+                        [attr.disabled]="disabled"
+                        formControlName="ShomarehSanadRahni"
+                        [(ngModel)]="sanadRahniGheyrManghol.ShomarehSanadRahni"
+                      />
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="ShomarehDaftarkhanehTanzimkonandeh"
+                        >شماره دفترخانه تنظیم کننده سند رهنی</label
+                      >
+                      <input
+                        type="text"
+                        pInputText
+                        id="ShomarehDaftarkhanehTanzimkonandeh"
+                        [attr.disabled]="disabled"
+                        formControlName="ShomarehDaftarkhanehTanzimkonandeh"
+                        [(ngModel)]="
+                          sanadRahniGheyrManghol.ShomarehDaftarkhanehTanzimkonandeh
+                        "
+                      />
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="ProvinceCode"
+                        >استان حوزه ثبتی دفترخانه تنظیم کننده سند رهنی</label
+                      >
+                      <select
+                        class="form-control"
+                        id="ProvinceCode"
+                        formControlName="ProvinceCode"
+                        [attr.disabled]="disabled"
+                        [(ngModel)]="sanadRahniGheyrManghol.ProvinceCode"
+                        #mySelect
+                        (change)="setCity(mySelect.value)"
+                      >
+                        <option value=""></option>
+                        <option
+                          *ngFor="let province of AllProvince"
+                          value="{{ province.Code }}"
+                        >
+                          {{ province.Name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="ShomarehDaftarkhanehTanzimkonandeh"
+                        >حوزه ثبتی دفترخانه تنظیم کننده سند رهنی</label
+                      >
+                      <select
+                        class="form-control"
+                        id="ShomarehDaftarkhanehTanzimkonandeh"
+                        [attr.disabled]="disabled"
+                        formControlName="ShomarehDaftarkhanehTanzimkonandeh"
+                        [(ngModel)]="
+                          sanadRahniGheyrManghol.ShomarehDaftarkhanehTanzimkonandeh
+                        "
+                      >
+                        <option [ngValue]=""></option>
+                        <option
+                          *ngFor="let cityProvince of cityProvinces"
+                          value="{{ cityProvince.Id }}"
+                        >
+                          {{ cityProvince.Name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="SanadRahniDate">تاریخ سند رهنی</label>
+                      <div class="row col-md-12">
+                        <div class="col-md-11">
+                          <input
+                            matInput
+                            pInputText
+                            id="SanadRahniDate"
+                            disabled="disabled"
+                            formControlName="SanadRahniDate"
+                            [(ngModel)]="sanadRahniGheyrManghol.SanadRahniDate"
+                            [matDatepicker]="picker6"
+                            placeholder="تاریخ سند رهنی"
+                          />
+                        </div>
+                        <div class="col-md-1">
+                          <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker6"
+                          ></mat-datepicker-toggle>
+                          <mat-datepicker #picker6></mat-datepicker>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="SanadRahniGheyrMangholTypeId"
+                        >نوع سند رهنی</label
+                      >
+                      <select
+                        class="form-control"
+                        id="SanadRahniGheyrMangholTypeId"
+                        [attr.disabled]="disabled"
+                        formControlName="SanadRahniGheyrMangholTypeId"
+                        [(ngModel)]="
+                          sanadRahniGheyrManghol.SanadRahniGheyrMangholTypeId
+                        "
+                      >
+                        <option [ngValue]=""></option>
+                        <option
+                          *ngFor="let cityProvince of cityProvinces"
+                          value="{{ cityProvince.Id }}"
+                        ></option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="MizanArzyabiAvaliyeh"
+                        >میزان ارزیابی اولیه (ريال)</label
+                      >
+                      <input
+                        type="text"
+                        pInputText
+                        id="MizanArzyabiAvaliyeh"
+                        [attr.disabled]="disabled"
+                        formControlName="MizanArzyabiAvaliyeh"
+                        [(ngModel)]="
+                          sanadRahniGheyrManghol.MizanArzyabiAvaliyeh
+                        "
+                      />
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="MizanAkharinArzyabi"
+                        >میزان آخرین ارزیابی (ريال)</label
+                      >
+                      <input
+                        type="text"
+                        pInputText
+                        id="MizanAkharinArzyabi"
+                        [attr.disabled]="disabled"
+                        formControlName="MizanAkharinArzyabi"
+                        [(ngModel)]="sanadRahniGheyrManghol.MizanAkharinArzyabi"
+                      />
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="MablaghSanadRahni"
+                        >مبلغ سند رهنی (ريال)</label
+                      >
+                      <input
+                        type="text"
+                        pInputText
+                        id="MablaghSanadRahni"
+                        [attr.disabled]="disabled"
+                        formControlName="MablaghSanadRahni"
+                        [(ngModel)]="sanadRahniGheyrManghol.MablaghSanadRahni"
+                      />
+                    </div>
+
+                    <label class="col-md-12 text-center m-2 text-danger"
+                      >در صورت حذف، سند رهنی غیر منقول به طور کامل از سامانه
+                      حقوقی حذف می گردد و قابل بازیابی نمی باشد.</label
+                    >
+                    <div class="col-md-12 text-center m-1 p-1">
+                      <input
+                        type="submit"
+                        name="save"
+                        class="btn btn-danger ml-1"
+                        value="حذف"
+                        id="butsave"
+                        style="width: 120px"
+                      />
+                      <input
+                        name="close"
+                        class="btn btn-light"
+                        value="انصراف"
+                        (click)="hideDialog()"
+                        style="width: 120px"
+                      />
+                    </div>
+                  </div>
+                </form>
+              </ng-template>
+            </p-dialog>
+
+            <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

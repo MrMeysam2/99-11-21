@@ -1,0 +1,707 @@
+<div class="header bg-gradient-danger pb-5 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <div class="row"><label class="labelTop"> اشخاص حقوقی </label></div>
+    </div>
+  </div>
+</div>
+<div class="mt--7 m-1">
+  <div class="row">
+    <div class="col-xl-12 mb-5 mb-xl-0">
+      <div class="card bg-gradient-default shadow">
+        <div class="card-header bg-transparent">
+          <div class="row align-items-center">
+            <p-toast></p-toast>
+
+            <div class="card">
+              <p-toolbar styleClass="p-mb-4">
+                <ng-template pTemplate="left">
+                  <button
+                    pButton
+                    pRipple
+                    icon="pi pi-user-plus"
+                    iconPos="left"
+                    label="جدید"
+                    class="p-button-success p-mr-2"
+                    (click)="openNew()"
+                  ></button>
+                  <button
+                    pButton
+                    pRipple
+                    icon="pi pi-search"
+                    style="margin-left: 5px"
+                    iconPos="left"
+                    label="فیلتر"
+                    class="p-button-primary p-mr-2"
+                    (click)="filter()"
+                  ></button>
+                </ng-template>
+
+                <ng-template pTemplate="right">
+                  <div class="col-md-12 text-danger" style="direction: rtl">
+                    لطفا مراحل ثبت شخص حقوقی بصورت زیر انجام پذیرد:
+                    <br />
+                    <div class="mt-1" style="font-size: small">
+                      1 - ثبت شخص حقوقی (عملیات جدید) 2 - ثبت مدیران شخص حقوقی
+                      (عملیات مدیران) 3 - ثبت آدرسهای شخص حقوقی (عملیات آدرسها)
+                    </div>
+                  </div>
+                </ng-template>
+              </p-toolbar>
+
+              <p-table
+                #dt
+                [value]="shakhsHoghooghis"
+                [rows]="10"
+                [paginator]="true"
+                [(selection)]="selectshakhsHoghooghis"
+                [rowHover]="true"
+                dataKey="Id"
+                currentPageReportTemplate="نمایش {first} تا {last} | از {totalRecords}"
+                [showCurrentPageReport]="true"
+              >
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th style="width: 3rem">
+                      <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th>
+                    <th pSortableColumn="ShenasehMeli">
+                      شناسه ملی
+                      <p-sortIcon field="ShenasehMeli"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="ShakhsHoghooghiName">
+                      نام شخص حقوقی
+                      <p-sortIcon field="ShakhsHoghooghiName"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="ShakhsHoghooghiTypeId">
+                      نوع شخص حقوقی
+                      <p-sortIcon field="ShakhsHoghooghiTypeId"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="SabtDate">
+                      تاریخ ثبت
+                      <p-sortIcon field="SabtDate"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="ShomarehSabt">
+                      شماره ثبت
+                      <p-sortIcon field="ShomarehSabt"></p-sortIcon>
+                    </th>
+                    <!-- <th pSortableColumn="MahalSabtCityId">
+                        شهر محل ثبت
+                        <p-sortIcon field="MahalSabtCityId"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="EghtesadiGhadimCode">
+                        کد اقتصادی قدیم
+                        <p-sortIcon field="EghtesadiGhadimCode"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="EghtesadiJadidCode">
+                        کداقتصادی جدید
+                        <p-sortIcon field="EghtesadiJadidCode"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="AkharinRooznamehRasmiDate">
+                        تاریخ آخرین روزنامه رسمی
+                        <p-sortIcon field="AkharinRooznamehRasmiDate"></p-sortIcon>
+                      </th> -->
+                    <th></th>
+                  </tr>
+                  <tr [hidden]="hideFilter">
+                    <th></th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="dt.filter($event.target.value, 'ShenasehMeli')"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="
+                          dt.filter($event.target.value, 'ShakhsHoghooghiName')
+                        "
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="
+                          dt.filter(
+                            $event.target.value,
+                            'ShakhsHoghooghiTypeId'
+                          )
+                        "
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="dt.filter($event.target.value, 'SabtDate')"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="dt.filter($event.target.value, 'ShomarehSabt')"
+                      />
+                    </th>
+                    <!-- <th>
+                        <input
+                          pInputText
+                          type="text"
+                          style="width: 100%"
+                          (input)="
+                            dt.filter($event.target.value, 'MahalSabtCityId')
+                          "
+                        />
+                      </th> -->
+                    <!-- <th>
+                        <input
+                          pInputText
+                          type="text"
+                          style="width: 100%"
+                          (input)="
+                            dt.filter(
+                              $event.target.value,
+                              'EghtesadiGhadimCode'
+                            )
+                          "
+                        />
+                      </th> -->
+                    <!-- <th>
+                        <input
+                          pInputText
+                          type="text"
+                          style="width: 100%"
+                          (input)="
+                            dt.filter($event.target.value, 'EghtesadiJadidCode')
+                          "
+                        />
+                      </th> -->
+                    <!-- <th>
+                        <input
+                          pInputText
+                          type="text"
+                          style="width: 100%"
+                          (input)="
+                            dt.filter($event.target.value, 'AkharinRooznamehRasmiDate')
+                          "
+                        />
+                      </th> -->
+                    <th></th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-shakhsHoghooghi>
+                  <tr>
+                    <td>
+                      <p-tableCheckbox
+                        [value]="shakhsHoghooghi"
+                      ></p-tableCheckbox>
+                    </td>
+                    <td>{{ shakhsHoghooghi.ShenasehMeli }}</td>
+                    <td>{{ shakhsHoghooghi.ShakhsHoghooghiName }}</td>
+                    <td>{{ shakhsHoghooghi.ShakhsHoghooghiTypeName }}</td>
+                    <td>{{ shakhsHoghooghi.SabtDate | jalalidate  }}</td>
+                    <td>{{ shakhsHoghooghi.ShomarehSabt }}</td>
+                    <!-- <td>{{ shakhsHoghooghi.MahalSabtCityId }}</td>
+                      <td>{{ shakhsHoghooghi.EghtesadiGhadimCode }}</td>
+                      <td>{{ shakhsHoghooghi.EghtesadiJadidCode }}</td>
+                      <td>{{ shakhsHoghooghi.AkharinRooznamehRasmiDate }}</td> -->
+                    <!-- <td>{{ shakhsHoghooghi.ShomarehMobile }}</td> -->
+                    <td>
+                      <div class="row">
+                        <button
+                          class="btn btn-primary ni ni-circle-08 p-2 m-1"
+                          (click)="addmodiran(shakhsHoghooghi)"
+                          title="مدیران"
+                        ></button>
+                        <button
+                          class="btn btn-primary ni ni-fat-add p-2 m-1"
+                          (click)="addaddress(shakhsHoghooghi)"
+                          title="آدرس ها"
+                        ></button>
+                        <button
+                          class="btn btn-primary pi pi-user-edit p-2 m-1"
+                          title="ویرایش"
+                          (click)="editHoghoghiPersons(shakhsHoghooghi)"
+                        ></button>
+                        <button
+                          class="btn btn-danger ni ni-fat-remove p-2 m-1"
+                          title="حذف"
+                          (click)="deleteShakhsHoghooghi(shakhsHoghooghi)"
+                        ></button>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                  <div class="p-ai-center">
+                    مجموع اشخاص حقوقی :
+                    {{ shakhsHoghooghis ? shakhsHoghooghis.length : 0 }}
+                  </div>
+                </ng-template>
+              </p-table>
+            </div>
+
+            <!-- Add - Update -->
+            <p-dialog
+              [(visible)]="ShakhsHoghooghiDialog"
+              [style]="{ width: '70%', direction: 'rtl' }"
+              header="{{ btnUpdate ? 'ویرایش شخص حقوقی' : 'ثبت شخص حقوقی' }}"
+              [modal]="true"
+              styleClass="p-fluid"
+            >
+              <ng-template pTemplate="content">
+                <form
+                  autocomplete="off"
+                  [formGroup]="checkoutForm"
+                  id="add_shakhsHoghooghi"
+                  name="add_shakhsHoghooghi"
+                  (ngSubmit)="onSubmit($event)"
+                  #doc="ngForm"
+                >
+                  <label class="col-md-12 text-center m-2 text-danger">
+                    در صورت در اختیار نداشتن اطلاعات شخص حقوقی،جهت دریافت
+                    اطلاعات شخص حقوقی لطفا به سامانه شناسه ملی اشخاص حقوقی کشور
+                    به آدرس زیر مراجعه نمایید
+                    <br />
+                    <a href="https://ilenc.ssaa.ir" target="blank"> https://ilenc.ssaa.ir </a>
+                  </label>
+                  <div class="row col-md-12">
+                    <div class="col-md-6">
+                      <label for="ShenasehMeli">شناسه ملی</label>
+                      <small class="p-invalid" [hidden]="StatusShenasehMeliRepeat">
+                        ( شناسه ملی تکراری می باشد )
+                      </small>
+                      <input
+                        type="text"
+                        pInputText
+                        maxlength="11"
+                        id="ShenasehMeli"
+                        (change)="
+                        GetDataByShenasehMeli(
+                          shakhsHoghooghi.ShenasehMeli
+                          )
+                        "
+                        formControlName="ShenasehMeli"
+                        [(ngModel)]="shakhsHoghooghi.ShenasehMeli"
+                        autofocus
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="ShakhsHoghooghiName">نام شخص حقوقی</label>
+                      <input
+                        type="text"
+                        pInputText
+                        maxlength="100"
+                        id="ShakhsHoghooghiName"
+                        formControlName="ShakhsHoghooghiName"
+                        [(ngModel)]="shakhsHoghooghi.ShakhsHoghooghiName"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="ShakhsHoghooghiTypeId">نوع شخص حقوقی</label>
+                      <select
+                        class="form-control"
+                        id="ShakhsHoghooghiTypeId"
+                        formControlName="ShakhsHoghooghiTypeId"
+                        [(ngModel)]="shakhsHoghooghi.ShakhsHoghooghiTypeId"
+                        required
+                      >
+                        <option
+                          *ngFor="
+                            let shakhshoghooghitype of AllShakhsHoghooghiType
+                          "
+                          value="{{ shakhshoghooghitype.Id }}"
+                        >
+                          {{ shakhshoghooghitype.ShakhsHoghooghiTypeName }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="EghtesadiJadidCode">کداقتصادی جدید</label>
+                      <input
+                        type="text"
+                        pInputText
+                        maxlength="16"
+                        id="EghtesadiJadidCode"
+                        formControlName="EghtesadiJadidCode"
+                        [(ngModel)]="shakhsHoghooghi.EghtesadiJadidCode"
+                      />
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="SabtDate">تاریخ ثبت</label>
+                      <div class="row col-md-12">
+                        <div class="col-md-11">
+                          <input
+                            matInput
+                            pInputText
+                            id="SabtDate"
+                            formControlName="SabtDate"
+                            [(ngModel)]="shakhsHoghooghi.SabtDate"
+                            [matDatepicker]="picker6"
+                            placeholder="تاریخ ثبت"
+                          />
+                        </div>
+                        <div class="col-md-1">
+                          <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker6"
+                          ></mat-datepicker-toggle>
+                          <mat-datepicker #picker6></mat-datepicker>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="ShomarehSabt">شماره ثبت</label>
+                      <input
+                        type="text"
+                        pInputText
+                        maxlength="20"
+                        id="ShomarehSabt"
+                        formControlName="ShomarehSabt"
+                        [(ngModel)]="shakhsHoghooghi.ShomarehSabt"
+                      />
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="ProvinceCode">استان محل ثبت</label>
+                      <select
+                        class="form-control"
+                        id="ProvinceCode"
+                        formControlName="ProvinceCode"
+                        [(ngModel)]="shakhsHoghooghi.ProvinceCode"
+                        #mySelect
+                        (change)="setCity(mySelect.value)"
+                      >
+                        <option value=""></option>
+                        <option
+                          *ngFor="let province of AllProvince"
+                          value="{{ province.Code }}"
+                        >
+                          {{ province.Name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="MahalSabtCityId">شهر محل ثبت</label>
+                      <select
+                        class="form-control"
+                        id="MahalSabtCityId"
+                        formControlName="MahalSabtCityId"
+                        [(ngModel)]="shakhsHoghooghi.MahalSabtCityId"
+                      >
+                        <option [ngValue]=""></option>
+                        <option
+                          *ngFor="let cityProvince of cityProvinces"
+                          value="{{ cityProvince.Id }}"
+                        >
+                          {{ cityProvince.Name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="EghtesadiGhadimCode">کد اقتصادی قدیم</label>
+                      <input
+                        type="text"
+                        pInputText
+                        maxlength="12"
+                        id="EghtesadiGhadimCode"
+                        formControlName="EghtesadiGhadimCode"
+                        [(ngModel)]="shakhsHoghooghi.EghtesadiGhadimCode"
+                      />
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="AkharinRooznamehRasmiDate"
+                        >تاریخ آخرین روزنامه رسمی</label
+                      >
+                      <div class="row col-md-12">
+                        <div class="col-md-11">
+                          <input
+                            matInput
+                            pInputText
+                            id="AkharinRooznamehRasmiDate"
+                            formControlName="AkharinRooznamehRasmiDate"
+                            [(ngModel)]="
+                              shakhsHoghooghi.AkharinRooznamehRasmiDate
+                            "
+                            [matDatepicker]="picker7"
+                            placeholder="تاریخ آخرین روزنامه رسمی"
+                          />
+                        </div>
+                        <div class="col-md-1">
+                          <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker7"
+                          ></mat-datepicker-toggle>
+                          <mat-datepicker #picker7></mat-datepicker>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <label for="ShomarehMobile">شماره موبایل</label>
+                      <input
+                        type="text"
+                        pInputText
+                        maxlength="50"
+                        id="ShomarehMobile"
+                        formControlName="ShomarehMobile"
+                        [(ngModel)]="shakhsHoghooghi.ShomarehMobile"
+                      />
+                    </div>
+                    <div class="col-md-12 text-center m-1 p-1">
+                      <input
+                        type="submit"
+                        name="save"
+                        class="btn btn-success ml-1"
+                        value="{{ btnUpdate ? 'ویرایش' : 'ثبت' }}"
+                        id="butsave"
+                        style="width: 120px"
+                        [disabled]="!doc.valid"
+                      />
+                      <input
+                        name="close"
+                        class="btn btn-light"
+                        value="انصراف"
+                        (click)="hideDialog()"
+                        style="width: 120px"
+                      />
+                    </div>
+                  </div>
+                </form>
+              </ng-template>
+            </p-dialog>
+
+            <!-- Delete -->
+            <p-dialog
+              [(visible)]="ShakhsHoghooghiDialogDelete"
+              [style]="{ width: '70%', direction: 'rtl' }"
+              header="حذف شخص حقوقی"
+              [modal]="true"
+              styleClass="p-fluid"
+            >
+              <ng-template pTemplate="content">
+                <form
+                  [formGroup]="checkoutForm"
+                  id="delete_shakhsHoghooghi"
+                  name="delete_shakhsHoghooghi"
+                  (ngSubmit)="onSubmitDelete(shakhsHoghooghi.Id)"
+                  #doc="ngForm"
+                >
+                  <div class="row col-md-12">
+                    <div class="col-md-6">
+                      <label for="ShenasehMeli">شناسه ملی</label>
+                      
+                      <input
+                        type="text"
+                        pInputText
+
+                        [attr.disabled]="disabled"
+                        formControlName="ShenasehMeli"
+                        [(ngModel)]="shakhsHoghooghi.ShenasehMeli"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="ShakhsHoghooghiName">نام شخص حقوقی</label>
+                      <input
+                        type="text"
+                        pInputText
+                        [attr.disabled]="disabled"
+                        formControlName="ShakhsHoghooghiName"
+                        [(ngModel)]="shakhsHoghooghi.ShakhsHoghooghiName"
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="ShakhsHoghooghiTypeId">نوع شخص حقوقی</label>
+                      <select
+                        class="form-control"
+                        [attr.disabled]="disabled"
+                        formControlName="ShakhsHoghooghiTypeId"
+                        [(ngModel)]="shakhsHoghooghi.ShakhsHoghooghiTypeId"
+                      >
+                        <option
+                          *ngFor="
+                            let shakhshoghooghitype of AllShakhsHoghooghiType
+                          "
+                          value="{{ shakhshoghooghitype.Id }}"
+                        >
+                          {{ shakhshoghooghitype.ShakhsHoghooghiTypeName }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="EghtesadiJadidCode">کداقتصادی جدید</label>
+                      <input
+                        type="text"
+                        pInputText
+                        [attr.disabled]="disabled"
+                        formControlName="EghtesadiJadidCode"
+                        [(ngModel)]="shakhsHoghooghi.EghtesadiJadidCode"
+                      />
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="SabtDate">تاریخ ثبت</label>
+                      <div class="row col-md-12">
+                        <div class="col-md-11">
+                          <input
+                            matInput
+                            pInputText
+                            disabled="disabled"
+                            formControlName="SabtDate"
+                            [(ngModel)]="shakhsHoghooghi.SabtDate"
+                            [matDatepicker]="picker6"
+                            placeholder="تاریخ ثبت"
+                          />
+                        </div>
+                        <div class="col-md-1">
+                          <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker6"
+                          ></mat-datepicker-toggle>
+                          <mat-datepicker #picker6></mat-datepicker>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="ShomarehSabt">شماره ثبت</label>
+                      <input
+                        type="text"
+                        pInputText
+                        [attr.disabled]="disabled"
+                        formControlName="ShomarehSabt"
+                        [(ngModel)]="shakhsHoghooghi.ShomarehSabt"
+                      />
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="ProvinceCode">استان محل ثبت</label>
+                      <select
+                        class="form-control"
+                        [attr.disabled]="disabled"
+                        formControlName="ProvinceCode"
+                        [(ngModel)]="shakhsHoghooghi.ProvinceCode"
+                        #mySelect
+                        (change)="setCity(mySelect.value)"
+                      >
+                        <option
+                          *ngFor="let province of AllProvince"
+                          value="{{ province.Code }}"
+                        >
+                          {{ province.Name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="MahalSabtCityId">شهر محل ثبت</label>
+                      <select
+                        class="form-control"
+                        [attr.disabled]="disabled"
+                        formControlName="MahalSabtCityId"
+                        [(ngModel)]="shakhsHoghooghi.MahalSabtCityId"
+                      >
+                        <option
+                          *ngFor="let cityProvince of GetAllCity"
+                          value="{{ cityProvince.Id }}"
+                        >
+                          {{ cityProvince.Name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="EghtesadiGhadimCode">کد اقتصادی قدیم</label>
+                      <input
+                        type="text"
+                        pInputText
+                        [attr.disabled]="disabled"
+                        formControlName="EghtesadiGhadimCode"
+                        [(ngModel)]="shakhsHoghooghi.EghtesadiGhadimCode"
+                      />
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="AkharinRooznamehRasmiDate"
+                        >تاریخ آخرین روزنامه رسمی</label
+                      >
+                      <div class="row col-md-12">
+                        <div class="col-md-11">
+                          <input
+                            matInput
+                            pInputText
+                            disabled="disabled"
+                            formControlName="AkharinRooznamehRasmiDate"
+                            [(ngModel)]="
+                              shakhsHoghooghi.AkharinRooznamehRasmiDate
+                            "
+                            [matDatepicker]="picker7"
+                            placeholder="تاریخ آخرین روزنامه رسمی"
+                          />
+                        </div>
+                        <div class="col-md-1">
+                          <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker7"
+                          ></mat-datepicker-toggle>
+                          <mat-datepicker #picker7></mat-datepicker>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <label for="ShomarehMobile">شماره موبایل</label>
+                      <input
+                        type="text"
+                        pInputText
+                        [attr.disabled]="disabled"
+                        formControlName="ShomarehMobile"
+                        [(ngModel)]="shakhsHoghooghi.ShomarehMobile"
+                      />
+                    </div>
+
+                    <label class="col-md-12 text-center m-2 text-danger"
+                      >درصورت حذف، شخص حقوقی به طور کامل از سامانه حقوقی حذف می
+                      گردد و قابل بازیابی نمیباشد</label
+                    >
+                    <div class="col-md-12 text-center m-1 p-1">
+                      <input
+                        type="submit"
+                        name="save"
+                        class="btn btn-danger ml-1"
+                        value="حذف"
+                        id="butsave"
+                        style="width: 120px"
+                      />
+                      <input
+                        name="close"
+                        class="btn btn-light"
+                        value="انصراف"
+                        (click)="hideDialog()"
+                        style="width: 120px"
+                      />
+                    </div>
+                  </div>
+                </form>
+              </ng-template>
+            </p-dialog>
+
+            <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

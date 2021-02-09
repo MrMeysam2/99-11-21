@@ -1,0 +1,426 @@
+<div class="header bg-gradient-danger pb-5 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <!-- Card stats -->
+      <div class="row"><label class="labelTop"> آدرس های شخص حقوقی </label></div>
+    </div>
+  </div>
+</div>
+<div class="mt--7 m-1">
+  <div class="row">
+    <div class="col-xl-12 mb-5 mb-xl-0">
+      <div class="card bg-gradient-default shadow">
+        <div class="card-header bg-transparent">
+          <div class="row align-items-center">
+            <p-toast></p-toast>
+
+            <div class="card">
+              <p-toolbar styleClass="p-mb-4">
+                <div class="col-md-3">
+                  <button
+                    pButton
+                    pRipple
+                    icon="pi pi-user-plus"
+                    iconPos="left"
+                    label="جدید"
+                    class="p-button-success p-mr-2"
+                    (click)="openNew()"
+                  ></button>
+                  <button
+                    pButton
+                    pRipple
+                    icon="pi pi-search"
+                    style="margin-left: 5px"
+                    iconPos="left"
+                    label="فیلتر"
+                    class="p-button-primary p-mr-2"
+                    (click)="filter()"
+                  ></button>
+                </div>
+                <div class="col-md-9 row" style="direction: rtl">
+                  <div class="col-md-3">
+                    <label for=""> شناسه ملی : {{ ShenasehMeli }} </label>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="">
+                      نام شخص حقوقی : {{ ShakhsHoghooghiName }}</label
+                    >
+                  </div>
+                  <div class="col-md-3">
+                    <label for="">
+                      نوع شخص حقوقی : {{ ShakhsHoghooghiTypeId }}</label
+                    >
+                  </div>
+                </div>
+              </p-toolbar>
+
+              <p-table
+                #dt
+                [value]="shakhshoghooghiaddresss"
+                [rows]="10"
+                [paginator]="true"
+                [globalFilterFields]="[
+                  'name',
+                  'country.name',
+                  'representative.name',
+                  'status'
+                ]"
+                [(selection)]="selectshakhshoghooghiaddress"
+                [rowHover]="true"
+                dataKey="PersonId"
+                currentPageReportTemplate="نمایش {first} تا {last} | از {totalRecords}"
+                [showCurrentPageReport]="true"
+              >
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th style="width: 3rem">
+                      <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th>
+                    <th pSortableColumn="ProvinceName">
+                      استان
+                      <p-sortIcon field="ProvinceName"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="CityName">
+                      شهر
+                      <p-sortIcon field="CityName"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="PostalCode">
+                      کد پستی
+                      <p-sortIcon field="PostalCode"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="address">
+                      آدرس
+                      <p-sortIcon field="address"></p-sortIcon>
+                    </th>
+                    <th></th>
+                  </tr>
+                  <tr [hidden]="hideFilter">
+                    <th></th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="dt.filter($event.target.value, 'ProvinceName')"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="dt.filter($event.target.value, 'CityName')"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="dt.filter($event.target.value, 'PostalCode')"
+                      />
+                    </th>
+                    <th>
+                      <input
+                        pInputText
+                        type="text"
+                        style="width: 100%"
+                        (input)="dt.filter($event.target.value, 'address')"
+                      />
+                    </th>
+                    <th></th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-shakhshoghooghiaddress>
+                  <tr>
+                    <td>
+                      <p-tableCheckbox
+                        [value]="shakhshoghooghiaddress"
+                      ></p-tableCheckbox>
+                    </td>
+                    <td>{{ shakhshoghooghiaddress.ProvinceName }}</td>
+                    <td>{{ shakhshoghooghiaddress.CityName }}</td>
+                    <td>{{ shakhshoghooghiaddress.PostalCode }}</td>
+                    <td>{{ shakhshoghooghiaddress.address }}</td>
+                    <td>
+                      <div class="row">
+                        <button
+                          class="btn btn-primary pi pi-user-edit p-2 m-1"
+                          title="ویرایش"
+                          (click)="editProduct(shakhshoghooghiaddress)"
+                        ></button>
+                        <button
+                          class="btn btn-danger ni ni-fat-remove p-2 m-1"
+                          title="حذف"
+                          (click)="deleteShakhsHaghighi(shakhshoghooghiaddress)"
+                        ></button>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                  <div class="p-ai-center">
+                    مجموع آدرس های شخص حقوقی :
+                    {{
+                      shakhshoghooghiaddresss
+                        ? shakhshoghooghiaddresss.length
+                        : 0
+                    }}
+                  </div>
+                </ng-template>
+              </p-table>
+            </div>
+
+            <!-- Add Update -->
+            <p-dialog
+              [(visible)]="haghighiAddressDialog"
+              [style]="{ width: '70%', 'z-index:': '800', direction: 'rtl' }"
+              header="{{
+                btnUpdate ? 'ویرایش آدرس شخص حقوقی' : 'ثبت آدرس شخص حقوقی'
+              }}"
+              [modal]="true"
+              styleClass="p-fluid"
+            >
+              <ng-template pTemplate="content">
+                <form
+                autocomplete="off"
+                  [formGroup]="checkoutForm"
+                  id="add_haghighiPerson"
+                  name="add_haghighiPerson"
+                  (ngSubmit)="onSubmit($event)"
+                  #doc="ngForm"
+                >
+                  <div class="row col-md-12">
+                    <div class="col-md-6">
+                      <label for="ProvinceCode">استان</label>
+                      <select
+                        class="form-control"
+                        id="ProvinceCode"
+                        formControlName="ProvinceCode"
+                        [(ngModel)]="shakhshoghooghiaddress.ProvinceCode"
+                        #mySelect
+                        (change)="setCity(mySelect.value)"
+                      >
+                        <option value=""></option>
+                        <option
+                          *ngFor="let province of AllProvince"
+                          value="{{ province.Code }}"
+                        >
+                          {{ province.Name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="CityId">شهر</label>
+                      <select
+                        class="form-control"
+                        id="CityId"
+                        formControlName="CityId"
+                        [(ngModel)]="shakhshoghooghiaddress.CityId"
+                      >
+                        <option [ngValue]=""></option>
+                        <option
+                          *ngFor="let cityProvince of cityProvinces"
+                          value="{{ cityProvince.Id }}"
+                        >
+                          {{ cityProvince.Name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="PostalCode">کدپستی</label>
+                      <input
+                        type="text"
+                        pInputText
+                        maxlength="10"
+                        id="PostalCode"
+                        formControlName="PostalCode"
+                        [(ngModel)]="shakhshoghooghiaddress.PostalCode"
+                      />
+                    </div>
+
+                    
+
+                    <div class="col-md-6">
+                      <label for="ShomarehTelephoneSabet">تلفن ثابت</label>
+                      <input
+                        type="text"
+                        pInputText
+                        maxlength="50"
+                        id="ShomarehTelephoneSabet"
+                        formControlName="ShomarehTelephoneSabet"
+                        [(ngModel)]="
+                          shakhshoghooghiaddress.ShomarehTelephoneSabet
+                        "
+                      />
+                    </div>
+
+                    <div class="col-md-12">
+                      <label for="address">آدرس</label>
+                      <input
+                        type="text"
+                        pInputText
+                        maxlength="300"
+                        id="address"
+                        formControlName="address"
+                        [(ngModel)]="shakhshoghooghiaddress.address"
+                      />
+                    </div>
+
+                    <div class="col-md-12 text-center m-1 p-1">
+                      <input
+                        type="submit"
+                        name="save"
+                        class="btn btn-success ml-1"
+                        value="{{ btnUpdate ? 'ویرایش' : 'ثبت' }}"
+                        id="butsave"
+                        [disabled]="!doc.valid"
+                        style="width: 120px"
+                      />
+                      <input
+                        name="close"
+                        class="btn btn-light"
+                        value="انصراف"
+                        (click)="hideDialog()"
+                        style="width: 120px"
+                      />
+                    </div>
+                  </div>
+                </form>
+              </ng-template>
+            </p-dialog>
+
+            <!-- delete -->
+            <p-dialog
+              [(visible)]="haghighiDialogDelete"
+              [style]="{ width: '70%', 'z-index:': '800', direction: 'rtl' }"
+              header="حذف شخص حقوقی"
+              [modal]="true"
+              styleClass="p-fluid"
+            >
+              <ng-template pTemplate="content">
+                <form
+                  [formGroup]="checkoutForm"
+                  id="delete_haghighiPerson"
+                  name="delete_haghighiPerson"
+                  (ngSubmit)="onSubmitDelete(shakhshoghooghiaddress.Id)"
+                  #doc="ngForm"
+                >
+                  <div class="row col-md-12">
+                    <div class="col-md-6">
+                      <label for="ProvinceCode">استان</label>
+                      <select
+                        class="form-control"
+                        [attr.disabled]="disabled"
+                        formControlName="ProvinceCode"
+                        [(ngModel)]="shakhshoghooghiaddress.ProvinceCode"
+                        #mySelect
+                        (change)="setCity(mySelect.value)"
+                      >
+                        <option
+                          *ngFor="let province of AllProvince"
+                          value="{{ province.Code }}"
+                        >
+                          {{ province.Name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="CityId">شهر</label>
+                      <select
+                        class="form-control"
+                        [attr.disabled]="disabled"
+                        formControlName="CityId"
+                        [(ngModel)]="shakhshoghooghiaddress.CityId"
+                      >
+                        <option
+                          [hidden]="true"
+                          *ngFor="let cityProvince of cityProvinces"
+                          value="{{ cityProvince.Id }}"
+                        >
+                          {{ cityProvince.Name }}
+                        </option>
+                        <option
+                          [hidden]="false"
+                          *ngFor="let cityProvince of GetAllCity"
+                          value="{{ cityProvince.Id }}"
+                        >
+                          {{ cityProvince.Name }}
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="PostalCode">کدپستی</label>
+                      <input
+                        type="text"
+                        pInputText
+                        [attr.disabled]="disabled"
+                        formControlName="PostalCode"
+                        [(ngModel)]="shakhshoghooghiaddress.PostalCode"
+                      />
+                    </div>
+
+                    
+
+                    <div class="col-md-6">
+                      <label for="ShomarehTelephoneSabet">تلفن ثابت</label>
+                      <input
+                        type="text"
+                        pInputText
+                        [attr.disabled]="disabled"
+                        formControlName="ShomarehTelephoneSabet"
+                        [(ngModel)]="
+                          shakhshoghooghiaddress.ShomarehTelephoneSabet
+                        "
+                      />
+                    </div>
+
+                    <div class="col-md-12">
+                      <label for="address">آدرس</label>
+                      <input
+                        type="text"
+                        pInputText
+                        [attr.disabled]="disabled"
+                        formControlName="address"
+                        [(ngModel)]="shakhshoghooghiaddress.address"
+                      />
+                    </div>
+
+                    <label class="col-md-12 text-center m-2 text-danger"
+                      >درصورت حذف، آدرس شخص حقوقی به طور کامل از سامانه حقوقی
+                      حذف می گردد و قابل بازیابی نمیباشد</label
+                    >
+
+                    <div class="col-md-12 text-center m-1 p-1">
+                      <input
+                        type="submit"
+                        name="save"
+                        class="btn btn-danger ml-1"
+                        value="حذف"
+                        id="butsave"
+                        style="width: 120px"
+                      />
+                      <input
+                        name="close"
+                        class="btn btn-light"
+                        value="انصراف"
+                        (click)="hideDialog()"
+                        style="width: 120px"
+                      />
+                    </div>
+                  </div>
+                </form>
+              </ng-template>
+            </p-dialog>
+
+            <p-confirmDialog [style]="{ width: '450px' }"></p-confirmDialog>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

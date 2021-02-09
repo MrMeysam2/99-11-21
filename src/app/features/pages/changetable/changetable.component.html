@@ -1,0 +1,63 @@
+<div class="header bg-gradient-danger pb-5 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <!-- Card stats -->
+      <div class="row"><label class="labelTop"> جدول تغییرها </label></div>
+    </div>
+  </div>
+</div>
+<div class="mt--7 m-1">
+  <div class="row">
+    <div class="col-xl-12 mb-5 mb-xl-0">
+      <div class="card bg-gradient-default shadow">
+        <div class="card-header bg-transparent">
+          <div class="row align-items-center">
+            <p-toast></p-toast>
+
+            <div class="card">
+              <p-toolbar styleClass="p-mb-4">
+                <div class="col-md-5 text-left">
+                  <button
+                    pButton
+                    pRipple
+                    [hidden]="hiddenFilter"
+                    icon="pi pi-search"
+                    style="margin-left: 5px"
+                    iconPos="left"
+                    label="فیلتر"
+                    class="p-button-primary p-mr-2"
+                    (click)="filter()"
+                  ></button>
+                </div>
+
+                <div class="col-md-7 text-right">
+                  <div class="text-danger" style="direction: rtl">
+                    <div class="row mt-1" style="font-size: small">
+                      <p class="m-2" style="color: #525f7f;"> جدول تغییر یافته </p>
+                      <div class="col-md-6">
+                        <mat-form-field appearance="fill" style="width: 100%">
+                          <mat-label>انتخاب کنید</mat-label>
+                          <mat-select>
+                            <mat-option
+                              *ngFor="let sabet of sabetGetAll"
+                              value="sabet.SabetTypeId"
+                              [routerLink]="['changetablesabet' + sabet.Id]"
+                            >
+                              {{ sabet.SabetName }}</mat-option
+                            >
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </p-toolbar>
+            </div>
+
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
